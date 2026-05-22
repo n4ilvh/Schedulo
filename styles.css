@@ -1,6 +1,28 @@
 body {
     padding: 0;
     font-family: sans-serif;
+    background-color: #f8f5e4;
+}
+
+.title {
+    font-size: 5ch;
+    color: #848b67;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button {
+    background-color: #f6cf8a;
+    color: #aba25d;
+    border: none;
+    border-radius: 20px;
+    padding: 0px 10px;
+}
+
+.button:hover {
+    background-color: #aba25d;
+    color: #f6cf8a;
 }
 
 .container {
