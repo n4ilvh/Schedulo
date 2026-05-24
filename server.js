@@ -2,7 +2,8 @@ import express from 'express';
 import multer from 'multer';
 import cors from 'cors';
 import { GoogleGenAI } from '@google/genai';
-import 'dotenv/config'; // Loads your GEMINI_API_KEY from a .env file
+import 'dotenv/config'; // Loads GEMINI_API_KEY from a .env file
+import { google } from 'googleapis';
 
 const app = express();
 app.use(cors()); // Allow your frontend to talk to the backend
@@ -14,6 +15,16 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Initialize the Google Gen AI client
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
+// Initialize the OAuth2 client using your credentials from the .env file
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  'http://localhost:3000/oauth2callback' // Must match Cloud Console
+);
+
+// ==========================================
+// 1. TIMETABLE EXTRACTION ROUTE
+// ==========================================
 app.post('/api/extract-schedule', upload.single('timetable'), async (req, res) => {
     try {
         if (!req.file) {
@@ -35,6 +46,8 @@ app.post('/api/extract-schedule', upload.single('timetable'), async (req, res) =
                 "room": "e.g., NN 231"
             }
             Return ONLY the raw JSON data array. No markdown wrappers.
+            If you do not detect any text return nothing.
+            If you do not detect a schedule return nothing.
         `;
 
         // FIXED SDK CALL STRUCTURE
@@ -53,15 +66,26 @@ app.post('/api/extract-schedule', upload.single('timetable'), async (req, res) =
 
         // Safe extraction of the text response
         const responseText = response.text;
-        if (!responseText) {
-            throw new Error("Gemini returned an empty response");
-        }
 
         // Clean up markdown code blocks if the model accidentally included them
         const cleanJsonText = responseText.replace(/```json|```/g, "").trim();
         const parsedSchedule = JSON.parse(cleanJsonText);
 
-        res.json({ schedule: parsedSchedule });
+        const structuredByDay = {
+            Monday: [], Tuesday: [], Wednesday: [], 
+            Thursday: [], Friday: [], Saturday: [], Sunday: []
+        };
+
+        parsedSchedule.forEach(item => {
+            if (structuredByDay[item.day]) {
+                structuredByDay[item.day].push(item);
+            } else {
+                // Handle edge case if the model didn't perfectly capitalize the day
+                console.warn(`Unexpected day format found: ${item.day}`);
+            }
+        });
+
+        res.json({ schedule: structuredByDay });
 
     } catch (error) {
         // Look at your node terminal to see this output!
@@ -76,19 +100,10 @@ app.post('/api/extract-schedule', upload.single('timetable'), async (req, res) =
     }
 });
 
-app.listen(3000, () => console.log('Server running safely on port 3000'));
 
-
-import { google } from 'googleapis';
-
-// Initialize the OAuth2 client using your credentials from the .env file
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  'http://localhost:3000/oauth2callback' // Must match your Cloud Console precisely
-);
-
-// 1. Endpoint to generate the Google Login URL
+// ==========================================
+// 2. GOOGLE AUTH ROUTES
+// ==========================================
 app.get('/api/auth/google', (req, res) => {
   const url = oauth2Client.generateAuthUrl({
     access_type: 'offline', // Gives you a refresh token to stay logged in
@@ -104,9 +119,6 @@ app.get('/oauth2callback', async (req, res) => {
     // Exchange the authorization code for access tokens
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
-
-    // In a real app, save these tokens securely (e.g., in a session or database)
-    // For testing, we can redirect back to your frontend with a success message
     res.redirect('http://127.0.0.1:5500/index.html?auth=success');
   } catch (error) {
     console.error('Error retrieving access token', error);
@@ -114,14 +126,15 @@ app.get('/oauth2callback', async (req, res) => {
   }
 });
 
-// 3. Endpoint to inject the parsed schedule into the user's calendar
+// ==========================================
+// 3. GOOGLE CALENDAR EXPORT ROUTE
+// ==========================================
 app.post('/api/create-events', async (req, res) => {
   try {
     const { schedule } = req.body; // Pass the JSON array extracted by Gemini
     const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
-    // Helper: Map day names to actual start dates of your specific term
-    // Let's assume the Fall semester starts the week of Monday, September 7th, 2026
+    // FIX let users choose course start date
     const dayToDateMap = {
       'Monday': '2026-09-07',
       'Tuesday': '2026-09-08',
@@ -130,10 +143,19 @@ app.post('/api/create-events', async (req, res) => {
       'Friday': '2026-09-11'
     };
 
-    // End date of the semester for the recurring rule (e.g., Dec 11, 2026)
+    // FIX let users choose course end date
     const semesterEndDate = '20261211T235959Z';
 
-    for (const item of schedule) {
+    const flatSchedule = [];
+ for (const day in schedule) {
+      schedule[day].forEach(item => {
+        // Ensure the item keeps its day property attached just in case
+        flatSchedule.push({ ...item, day: day });
+      });
+    }
+
+    // Now loop over the flat array like before
+    for (const item of flatSchedule) {
       const dateStr = dayToDateMap[item.day];
       if (!dateStr) continue;
 
@@ -146,19 +168,17 @@ app.post('/api/create-events', async (req, res) => {
         description: 'Automatically imported via Timetable Scanner.',
         start: {
           dateTime: startDateTime,
-          timeZone: 'America/Toronto', // Change to your local time zone
+          timeZone: 'America/Toronto', 
         },
         end: {
           dateTime: endDateTime,
           timeZone: 'America/Toronto',
         },
-        // RRULE makes the event repeat weekly until the semester ends!
         recurrence: [
           `RRULE:FREQ=WEEKLY;UNTIL=${semesterEndDate}`
         ],
       };
 
-      // Insert the event into the user's primary calendar
       await calendar.events.insert({
         calendarId: 'primary',
         resource: event,
@@ -172,3 +192,5 @@ app.post('/api/create-events', async (req, res) => {
     res.status(500).json({ error: 'Failed to add events to Google Calendar.' });
   }
 });
+
+app.listen(3000, () => console.log('Server running safely on port 3000'));

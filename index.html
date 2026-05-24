@@ -10,17 +10,22 @@
 <body>
     <div class="title">Schedulor</div>
     <div class="container">
-        <div class="upper">
-            <input type="file" >
+        <div class="upper" id="upper">
+            <div class="upload-container">
+                <input type="file" id="file-upload" name="timetable" accept="image/*" hidden />
+                <label for="file-upload" class="file-button">Upload Timetable Image</label>
+            </div>
             <button class="button">Start</button>
+            <button class="button">Add to Calendar</button>
         </div>
         <div class="bottom">
-            <div>
+            <div class="image-box" id="image-box">
                 <img src="">
             </div>
             <div>
                 <textarea readonly placeholder="text"></textarea>
             </div>
+            <div id="calendar-grid" class="calendar-grid"></div>
         </div>
     </div>
 <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>

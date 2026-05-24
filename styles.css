@@ -17,22 +17,52 @@ body {
     color: #aba25d;
     border: none;
     border-radius: 20px;
-    padding: 0px 10px;
+    padding: 10px 2%;
+    width: 15%;
+    text-wrap: nowrap;
 }
 
 .button:hover {
     background-color: #aba25d;
     color: #f6cf8a;
+    cursor: pointer;
 }
 
 .container {
     margin-top: 50px;
 }
 
+.image-box {
+    border: 10px solid white;
+    border-radius: 20px;
+    background-color: #f6cf8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-box img {
+    object-fit: contain;
+    max-width: 10%;
+    max-height: 100%;
+}
+
+.upper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+    padding: 15px 0;
+    background-color: #4b4a36;
+    border-radius: 30px;
+}
+
 .upper div {
-    display: inline;
-    margin-left: 100px;
-    white-space: pre;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
 }
 
 .bottom {
@@ -42,7 +72,6 @@ body {
 
 .bottom div {
     flex: 1;
-    border: 1px solid black;
     height: 400px;
     margin: 10px;
 }
@@ -73,3 +102,83 @@ body {
 .bottom div:last-child {
     margin-right: 0px;
 }
+
+/* Main Container: Organizes the 5 days into columns */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 equal-width columns */
+    gap: 16px;
+    padding: 20px;
+    background-color: #F7CF89; /* Your sand yellow canvas */
+}
+
+/* Day Column */
+.day-column {
+    background-color: rgba(255, 255, 255, 0.3); /* Soft glass effect */
+    border-radius: 12px;
+    padding: 12px;
+    min-height: 400px;
+}
+
+.day-header {
+    color: #4F5139; /* Deep Olive Text */
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    text-align: center;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+/* Class Cards */
+.class-card {
+    background-color: #83965F; /* Sage Green Card Background */
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Minimalist Inputs inside the cards for easy correction */
+.class-card input {
+    background: transparent;
+    border: none;
+    color: #F7CF89; /* Sand Yellow text on green background */
+    font-family: 'Satoshi', sans-serif;
+    font-weight: bold;
+}
+
+.class-card input:focus {
+    outline: 1px dashed #F7CF89;
+}
+
+.time-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #F7CF89;
+}
+
+.edit-time {
+    width: 45px;
+    font-size: 0.85rem;
+}
+
+.upload-container {
+
+}
+
+.upload-container label {
+    display: inline-flex;      /* Allows flex behaviors like alignment while staying a button width */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;           /* Forces interactive cursor pointer finger */
+    padding: 10px 20px;        /* Matches internal spacing of clean buttons */
+    font-size: 14px;
+    user-select: none;         /* Disables highlight artifacts on double click */
+    text-align: center;
+    color: #f6cf8a;
+}
+
+
