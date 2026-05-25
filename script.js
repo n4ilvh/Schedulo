@@ -17,7 +17,6 @@ exportButton.innerHTML = 'Export to Google Calendar';
 exportButton.classList.add("button");
 
 // hide some elements on load
-exportButton.style.display = 'none';
 imgBox.style.display = "none";
 calendarGrid.style.display = "none";
 
@@ -102,7 +101,7 @@ start.onclick = async () => {
 
     } catch (error) {
         console.error(error);
-        textarea.innerHTML = `Error: ${error.message}`;
+        textarea.innerHTML = `Error. Could not detect timetable.`;
     }
 };
 

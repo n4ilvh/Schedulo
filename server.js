@@ -165,7 +165,7 @@ app.post('/api/create-events', async (req, res) => {
       const event = {
         summary: `${item.course_code} (Sec ${item.section || 'A'})`,
         location: item.room,
-        description: 'Automatically imported via Timetable Scanner.',
+        description: 'Automatically added by Schedulo',
         start: {
           dateTime: startDateTime,
           timeZone: 'America/Toronto', 

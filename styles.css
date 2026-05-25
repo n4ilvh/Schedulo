@@ -20,16 +20,27 @@ body {
     padding: 10px 2%;
     width: 15%;
     text-wrap: nowrap;
+    transition: background-color 0.5s ease;
 }
 
 .button:hover {
     background-color: #aba25d;
     color: #f6cf8a;
     cursor: pointer;
+    transition: background-color 0.5s ease;
 }
 
 .container {
     margin-top: 50px;
+}
+
+.file-button {
+    transition: color 0.5s ease;
+}
+
+.file-button:hover {
+    color: #aba25d;
+    transition: color 0.5s ease;
 }
 
 .image-box {
@@ -40,8 +51,6 @@ body {
     align-items: center;   
     justify-content: center;   
     width: 20%;
-    
-  
     box-sizing: border-box;
 }
 
@@ -53,7 +62,10 @@ body {
 .img-container {
     display: flex;
     justify-content: center;
-    margin: 10px 0px;
+    align-items: center; /* Vertically centers the internal img */
+    height: 100%;        /* Forces it to span the full 600px parent height */
+    width: 100%;
+    margin: 10px 0;           /* Clear margins so they don't fight box dimensions */
 }
 
 .img-container img {
@@ -82,7 +94,6 @@ body {
 }
 
 .bottom {
-    margin-top: 30px;
     display: flex;
     width: 100%;
     height: 600px;
@@ -95,13 +106,14 @@ body {
 /* Main Container: Organizes the 5 days into columns */
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 equal-width columns */
-    gap: 16px;
+    grid-template-columns: repeat(7, 11vw); /* 5 equal-width columns */
+    border-radius: 15px;
+    gap: 10px;
     padding: 20px;
     background-color: #F7CF89; /* Your sand yellow canvas */
     flex: 1;
-    border: 10px solid;
-    height: 300px;
+    height: 500px;
+    justify-content: center;
 }
 
 /* Day Column */
@@ -109,7 +121,7 @@ body {
     background-color: rgba(255, 255, 255, 0.3); /* Soft glass effect */
     border-radius: 12px;
     padding: 12px;
-    width: 10p;
+    
 }
 
 .day-header {
@@ -130,6 +142,7 @@ body {
     flex-direction: column;
     gap: 6px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
 }
 
 /* Minimalist Inputs inside the cards for easy correction */
@@ -139,7 +152,10 @@ body {
     color: #F7CF89; /* Sand Yellow text on green background */
     font-family: 'Satoshi', sans-serif;
     font-weight: bold;
+    width: 100%;
 }
+
+
 
 .class-card input:focus {
     outline: 1px dashed #F7CF89;
