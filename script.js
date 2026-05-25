@@ -1,23 +1,25 @@
 const fileSelector = document.querySelector('input');
 const start = document.querySelector('button');
 const img = document.querySelector('img');
-const textarea = document.querySelector('textarea');
+const textarea = document.getElementById('middle');
 const upper = document.getElementById('upper');
-const imgBox = document.getElementById('image-box');
+const calendarGrid = document.getElementById('calendar-grid');
 
-imgBox.style.display = "none";
+const imgBox = document.getElementById('image-box');
 
 // Create UI buttons programmatically for Google Calendar
 const authButton = document.createElement('button');
 authButton.innerHTML = 'Connect Google Calendar';
 authButton.classList.add("button");
 
-
 const exportButton = document.createElement('button');
 exportButton.innerHTML = 'Export to Google Calendar';
 exportButton.classList.add("button");
-// export is disabled at first
-// exportButton.style.display = 'none';
+
+// hide some elements on load
+exportButton.style.display = 'none';
+imgBox.style.display = "none";
+calendarGrid.style.display = "none";
 
 // add buttons to top bar
 upper.appendChild(authButton);
@@ -33,9 +35,9 @@ const BACKEND_URL = 'http://localhost:3000';
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('auth') === 'success') {
-        textarea.innerHTML = '✅ Google Calendar successfully authorized! You can now scan and export your timetable.';
+        textarea.innerHTML = 'Google Calendar connected successfully!';
     } else if (urlParams.get('auth') === 'error') {
-        textarea.innerHTML = '❌ Calendar authorization failed. Please try again.';
+        textarea.innerHTML = 'Calendar authorization failed. Please try again.';
     }
 };
 
@@ -44,6 +46,7 @@ fileSelector.onchange = () => {
     const file = fileSelector.files[0];
     if (file) {
         imgBox.style.display = "block";
+        calendarGrid.style.display = "grid";
         var imgUrl = window.URL.createObjectURL(file);
         img.src = imgUrl;
     }
@@ -52,7 +55,7 @@ fileSelector.onchange = () => {
 // Kick off OAuth authentication when clicked
 authButton.onclick = async () => {
     try {
-        textarea.innerHTML = 'Connecting to Google Authentication...';
+        textarea.innerHTML = 'Connecting to Google Calendar...';
         const response = await fetch(`${BACKEND_URL}/api/auth/google`);
         const data = await response.json();
         

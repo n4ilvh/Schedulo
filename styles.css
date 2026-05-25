@@ -37,14 +37,30 @@ body {
     border-radius: 20px;
     background-color: #f6cf8a;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center;   
+    justify-content: center;   
+    width: 20%;
+    
+  
+    box-sizing: border-box;
 }
 
-.image-box img {
-    object-fit: contain;
-    max-width: 10%;
-    max-height: 100%;
+.image-box div {
+    object-position: center top;
+    display: flex;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px;
+}
+
+.img-container img {
+    object-fit: cover;        /* Keeps aspect ratio preserved without clipping */
+    max-width: calc(100% - 20px);
+    max-height: calc(100% - 20px);
+
 }
 
 .upper {
@@ -68,40 +84,13 @@ body {
 .bottom {
     margin-top: 30px;
     display: flex;
+    width: 100%;
+    height: 600px;
+    align-items: center;
+    padding: 10px 0px;
+    gap: 12px;
 }
 
-.bottom div {
-    flex: 1;
-    height: 400px;
-    margin: 10px;
-}
-
-.bottom div img {
-    max-width: calc(100% - 20px);
-    max-height: calc(100% - 20px);
-    margin: 10px;
-}
-
-.bottom div textarea {
-    resize: none;
-    width: calc(100% - 21px);
-    height: calc(100% - 21px);
-    padding: 10px;
-    font-size: 20px;
-    outline: none;
-    border: none;
-}
-
-.bottom div:first-child {
-    margin-left: 0px;
-    -webkit-box-align: center;
-    -webkit-box-pack: center;
-    display: -webkit-box;
-}
-
-.bottom div:last-child {
-    margin-right: 0px;
-}
 
 /* Main Container: Organizes the 5 days into columns */
 .calendar-grid {
@@ -110,6 +99,9 @@ body {
     gap: 16px;
     padding: 20px;
     background-color: #F7CF89; /* Your sand yellow canvas */
+    flex: 1;
+    border: 10px solid;
+    height: 300px;
 }
 
 /* Day Column */
@@ -117,7 +109,7 @@ body {
     background-color: rgba(255, 255, 255, 0.3); /* Soft glass effect */
     border-radius: 12px;
     padding: 12px;
-    min-height: 400px;
+    width: 10p;
 }
 
 .day-header {
@@ -165,10 +157,6 @@ body {
     font-size: 0.85rem;
 }
 
-.upload-container {
-
-}
-
 .upload-container label {
     display: inline-flex;      /* Allows flex behaviors like alignment while staying a button width */
     align-items: center;
@@ -182,3 +170,10 @@ body {
 }
 
 
+.middle {
+    margin-top: 30px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
