@@ -200,8 +200,22 @@ body {
     align-items: center;
     gap: 10%;
     color: #aba25d;
+    padding: 10px
 }
 
 .edit div {
     cursor: auto;
+}
+
+.date-textbox {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px;
+}
+
+.date-textbox textarea {
+    width: 50%; 
+    resize: none;
+    height: 20px;
 }

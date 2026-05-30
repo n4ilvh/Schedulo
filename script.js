@@ -20,7 +20,7 @@ exportButton.classList.add("button");
 // hide some elements on load
 imgBox.style.display = "none";
 calendarGrid.style.display = "none";
-dateBox.style.display = "none";
+// dateBox.style.display = "none";
 
 // add buttons to top bar
 upper.appendChild(authButton);
