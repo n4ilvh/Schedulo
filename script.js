@@ -4,6 +4,7 @@ const img = document.querySelector('img');
 const textarea = document.getElementById('middle');
 const upper = document.getElementById('upper');
 const calendarGrid = document.getElementById('calendar-grid');
+const dateBox = document.getElementById('edit');
 
 const imgBox = document.getElementById('image-box');
 
@@ -19,6 +20,7 @@ exportButton.classList.add("button");
 // hide some elements on load
 imgBox.style.display = "none";
 calendarGrid.style.display = "none";
+dateBox.style.display = "none";
 
 // add buttons to top bar
 upper.appendChild(authButton);
@@ -94,6 +96,7 @@ start.onclick = async () => {
             throw new Error(data.error || 'Server error');
         }
 
+        dateBox.style.display = "flex";
         textarea.innerHTML = 'Schedule extracted! Review and adjust any values directly in the calendar columns below before exporting.';
 
         // Call our rendering function to build your new UI columns

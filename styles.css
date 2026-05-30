@@ -44,8 +44,8 @@ body {
 }
 
 .image-box {
-    border: 10px solid white;
-    border-radius: 20px;
+    border: 1px solid white;
+    border-radius: 10px;
     background-color: #f6cf8a;
     display: flex;
     align-items: center;   
@@ -65,14 +65,14 @@ body {
     align-items: center; /* Vertically centers the internal img */
     height: 100%;        /* Forces it to span the full 600px parent height */
     width: 100%;
-    margin: 10px 0;           /* Clear margins so they don't fight box dimensions */
+    margin: 15px 0;
 }
 
 .img-container img {
     object-fit: cover;        /* Keeps aspect ratio preserved without clipping */
     max-width: calc(100% - 20px);
     max-height: calc(100% - 20px);
-
+    border-radius: 2px;
 }
 
 .upper {
@@ -192,4 +192,16 @@ body {
     display: flex;
     justify-content: center;
     text-align: center;
+}
+
+.edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+    color: #aba25d;
+}
+
+.edit div {
+    cursor: auto;
 }
