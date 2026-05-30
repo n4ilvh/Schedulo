@@ -21,20 +21,22 @@
         
             
         </div>
-        <div class="edit" id="edit">
-            <div class="date-textbox">
-                <div>First Class</div>
-                <input type="date"></input>
-            </div>
-            <div class="date-textbox">
-                <div>Last Class</div>
-                <input type="date"></input>
-            </div>
-            <div class="date-textbox">
-                <div>Add Break</div>
-                <button></button>
-            </div>
-        </div>
+<div class="edit" id="edit">
+    <div class="date-group">
+        <label for="first-class">First Day of Classes</label>
+        <input type="date" id="first-class" class="date-input">
+    </div>
+    
+    <div class="date-group">
+        <label for="last-class">Last Day of Classes</label>
+        <input type="date" id="last-class" class="date-input">
+    </div>
+
+    <div class="breaks-section">
+        <button type="button" id="add-break-btn" class="add-button">+ Add Break Range</button>
+        <div id="breaks-container" style="background-color: red; gap: 10px;"></div>
+    </div>
+</div>
         <div class="bottom">
             <div class="image-box" id="image-box">
                 <div class="img-container">

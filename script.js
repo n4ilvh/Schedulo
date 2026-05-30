@@ -68,6 +68,36 @@ authButton.onclick = async () => {
     }
 };
 
+// Adding a break range
+document.addEventListener('DOMContentLoaded', () => {
+    const addBreakBtn = document.getElementById('add-break-btn');
+    const breaksContainer = document.getElementById('breaks-container');
+
+    // Function to add a new break range row
+    addBreakBtn.addEventListener('click', () => {
+        const breakRow = document.createElement('div');
+        breakRow.className = 'break-row';
+
+        breakRow.innerHTML = `
+            <div class="date-group">
+                <input type="date" class="date-input break-start" aria-label="Break Start Date">
+            </div>
+            <span style="color: #f6cf8a;">to</span>
+            <div class="date-group">
+                <input type="date" class="date-input break-end" aria-label="Break End Date">
+            </div>
+            <button type="button" class="remove-btn" title="Remove Break">&times;</button>
+        `;
+
+        // Event listener to remove this specific break row when clicking the 'X'
+        breakRow.querySelector('.remove-btn').addEventListener('click', () => {
+            breakRow.remove();
+        });
+
+        breaksContainer.appendChild(breakRow);
+    });
+});
+
 // =========================================================
 // TEXT RECOGNITION & RENDER FLOW
 // =========================================================
